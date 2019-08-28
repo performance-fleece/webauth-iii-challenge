@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
   }
 });
 router.get('/users', restricted, async (req, res) => {
-  const users = await Auth.find();
+  const users = await Auth.findbyFilter(req.department);
   res.status(200).json({ users, loggedInUser: req.user.username });
 });
 
@@ -49,7 +49,8 @@ router.post('/login', async (req, res) => {
 function generateToken(user) {
   const payload = {
     subject: user.id,
-    username: user.username //sub
+    username: user.username,
+    department: user.department //sub
   };
 
   const options = {
