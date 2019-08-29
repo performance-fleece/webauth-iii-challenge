@@ -15,7 +15,8 @@ router.post('/register', async (req, res) => {
 
   try {
     const newUser = await Auth.add(user);
-    res.status(201).json(newUser);
+    const token = generateToken(newUser);
+    res.status(201).json({ message: `Welcome ${user.username}`, token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: 'Error registering user' });
@@ -23,7 +24,7 @@ router.post('/register', async (req, res) => {
 });
 router.get('/users', restricted, async (req, res) => {
   const users = await Auth.findbyFilter(req.department);
-  res.status(200).json({ users, loggedInUser: req.user.username });
+  res.status(200).json(users);
 });
 
 router.post('/login', async (req, res) => {

@@ -9,6 +9,7 @@ const server = express();
 server.use(helmet());
 server.use(logger);
 server.use(express.json());
+server.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 server.use('/api', authRouter);
 
