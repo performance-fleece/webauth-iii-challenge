@@ -7,12 +7,14 @@ import {
   REGISTER_USER_FAIL,
   LOGIN_START,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAIL,
+  LOGOUT_START,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL
 } from '../actions';
 
 const initialState = {
   users: [],
-  token: null,
   fetchingUsers: false,
   addingUser: false,
   loggingIn: false,
@@ -34,7 +36,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         error: '',
-        token: action.payload,
         loggedIn: true,
         loggingIn: false
       };
@@ -65,6 +66,47 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         fetchingUsers: false,
+        error: action.payload
+      };
+    }
+    case REGISTER_USER_START: {
+      return {
+        ...state,
+        loggingIn: true,
+        loggedIn: false,
+        error: ''
+      };
+    }
+    case REGISTER_USER_SUCCESS: {
+      return {
+        ...state,
+        loggingIn: false,
+        loggedIn: true
+      };
+    }
+    case REGISTER_USER_FAIL: {
+      return {
+        ...state,
+        loggingIn: false,
+        error: action.payload
+      };
+    }
+    case LOGOUT_START: {
+      return {
+        ...state,
+        error: ''
+      };
+    }
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        loggedIn: false,
+        users: []
+      };
+    }
+    case LOGOUT_FAIL: {
+      return {
+        ...state,
         error: action.payload
       };
     }
